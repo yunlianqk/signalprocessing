@@ -2,20 +2,20 @@
 // Generate random numbers follow Gaussian Distribution
 
 #include <iostream>
-#include <vector>
 #include <math.h>
+#include <vector>
 using std::cout;
 using std::endl;
 using std::vector;
 
 const int32_t kNumRandGauss = 1000;
-float RandUniform() {  // random between 0 and 1.
-  return static_cast<float>((rand() + 1.0) / (RAND_MAX+2.0));
+float RandUniform() { // random between 0 and 1.
+  return static_cast<float>((rand() + 1.0) / (RAND_MAX + 2.0));
 }
 
 float RandGauss() {
-  return static_cast<float>(sqrt(-2 * log(RandUniform()))
-                            * cos(2*M_PI*RandUniform()));
+  return static_cast<float>(sqrt(-2 * log(RandUniform())) *
+                            cos(2 * M_PI * RandUniform()));
 }
 
 int main() {
@@ -32,4 +32,3 @@ int main() {
   cout << "sum: " << sum << " expection: " << sum / kNumRandGauss << endl;
   return 1;
 }
-
