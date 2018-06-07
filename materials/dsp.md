@@ -38,7 +38,7 @@ $zz^*=x^2+y^2$ $\frac {\partial u}{\partial x}=2x$ $\frac {\partial v}{\partial 
 那如何对这种函数求导呢？  
 形式导数  
 假设f(z)解析，则f(z)可以展开为z的泰勒级数的形式，在这个展开式中没有$z^*$的身影，说明f(z)和$z^*$没有任何关系。实际上，f(z)解析可以等价为$\frac{\partial f}{\partial z^*}=0$。  
-那么，不解析的函数就同时依赖于$z$和$z^*$。可以轻松推出一个事实：实函数f(z)都是不解析的，因为它必须同时依赖于z和z^*，否则它的虚部无法被消掉。因此zz^*作为一个实函数，也印证了不解析的事实。  
+那么，不解析的函数就同时依赖于$z$和$z^*$。可以轻松推出一个事实：实函数f(z)都是不解析的，因为它必须同时依赖于z和$z^*$，否则它的虚部无法被消掉。因此$zz^*$作为一个实函数，也印证了不解析的事实。  
 所以，一个不解析的复变函数可以写成  
 $f(z)=f(z, z*)$，以及$f(z)=f(x, y)$  
 根据全微分公式  
@@ -62,47 +62,8 @@ $\frac{\partial (zz^*)}{\partial z^*}=z$
 # 向量和矩阵的求导
 
 当对多变量进行求导时，为了简化运算，把很多变量组成矢量或者矩阵，作为一个实体来看待，这就是对矢量和矩阵的求导。  
-可能存在的求导情况有  
-  
-
-  
-
-标量
-
-向量
-
-矩阵
-
-标量
-
-  
-
-  
-
-  
-
-向量
-
-  
-
-  
-
-  
-
-矩阵
-
-  
-
-  
-
-  
-
-  
-以上可分为9种情况，要想详细了解可参考
-
+可能存在的求导情况有标量，向量，矩阵分别对各自求导，根据排列组合一共有9种情况，要想详细了解可参考
 [https://en.wikipedia.org/wiki/Matrix_calculus](https://en.wikipedia.org/wiki/Matrix_calculus)
-
-  
 
 这里我们只看最常用的标量对矢量的求导。  
 假设f(x)是一个标量，x是一个矢量，则：  
@@ -112,15 +73,34 @@ $$\frac{\partial f(x)}{\partial \bold x}=\begin{bmatrix} \frac{f(x)}{x_1}
 $$\frac{\partial \bold x^T \bold b}{\partial \bold x}=\bold b$$  
 $$\frac{\partial \bold b^T \bold x}{\partial \bold x}=\bold b$$  
   
-复数矩阵求导
-一些常用的导数  
-一些结论：  
+复数向量和矩阵求导
+由于标量和向量都可以认为是一种简化的矩阵，所以都可以统一为复数对矩阵的求导。根据全微分公式：
+$$df=\sum_{k=0}^{Q-1}\sum_{l=0}^{N-1}\frac{\partial f}{\partial x_{k,l}}dx_{k,l}+\sum_{k=0}^{Q-1}\sum_{l=0}^{N-1}\frac{\partial f}{\partial y_{k,l}}dy_{k,l}$$
+$$=\sum_{k=0}^{Q-1}\sum_{l=0}^{N-1}\frac{\partial f}{\partial z_{k,l}}dz_{k,l}+\sum_{k=0}^{Q-1}\sum_{l=0}^{N-1}\frac{\partial f}{\partial z^*_{k,l}}dz^*_{k,l}$$
+
+而复数导数F可以认为是矩阵$Z$和矩阵$Z^*$的函数，求导的通常方式是：
+对F求导，则$F(Z+dZ_0, Z^*+dZ^*_0)-F(Z,Z^*)=FirstOrder(dZ_0,dZ^*_0)+HighOrder(dZ_0,dZ^*_0)$
+$dF(Z,Z^*)=FirstOrder(dZ_0,dZ^*_0)$
+ 
+由此推导出一些结论：  
 $d(\bold A \bold Z \bold B)=\bold A(d\bold Z)\bold B$  
 $d(a\bold Z)=ad\bold Z$  
 $d{\bold Z_0 \bold Z_1}=(d\bold Z_0)\bold Z_1+\bold Z_0d\bold Z_1$  
 $d\bold Z^{-1}=-\bold Z^{-1}(d\bold Z)\bold Z^{-1}$  
 $d\bold Z^*=(d\bold Z)^*$  
 $d\bold Z^H=(d\bold Z)^H$
+还有对信号处理非常重要的一些结论，均是标量函数对复向量的求导：
+$dF(\bold a^T \bold z)=\bold a d\bold z$
+$dF(\bold z^T \bold a)=\bold a d\bold z$
+注意$\bold a^T \bold z = \bold z^T \bold a$
+$dF(\bold a^T \bold z^*)=\bold a d\bold z^*$
+$dF(\bold z^H \bold a)=\bold a d\bold z^*$
+注意$\bold a^T \bold z^* = \bold z^H \bold a$
+
+$dF(\bold z^T \bold A \bold z)=(\bold A + \bold A^T)\bold z d\bold z$
+$dF(\bold z^H \bold A \bold z)=\bold A^T\bold z^*d\bold z +\bold A\bold zd\bold z^*$
+$dF(\bold z^H \bold A \bold z^*)=(\bold A + \bold A^T)\bold z^* d\bold z^*$
+
 
 # 应用  
   
