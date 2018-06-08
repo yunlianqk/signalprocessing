@@ -83,17 +83,32 @@ $$\begin{bmatrix} {x_1}
 $$\frac{\partial f(x)}{\partial \bold x}=\begin{bmatrix} \frac{f(x)}{x_1}  
 \\ \cr \frac{f(x)}{x_2} \\ \cr \vdots \\ \cr \frac{f(x)}{x_N} \end{bmatrix}$$
 为什么是这样呢？答案是全微分公式：
+$$df=\frac{f(x)}{x_1}d{x_1}+\frac{f(x)}{x_2}d{x_2}+\cdots+\frac{f(x)}{x_N}d{x_N}$$
+写成向量的乘法就是$$df=(\begin{bmatrix} \frac{f(x)}{x_1}  
+\\ \cr \frac{f(x)}{x_2} \\ \cr \vdots \\ \cr \frac{f(x)}{x_N} \end{bmatrix})^Td\bold x$$
+
 根据这个定义，易得  
 $$\frac{\partial \bold x^T \bold b}{\partial \bold x}=\bold b$$  
 $$\frac{\partial \bold b^T \bold x}{\partial \bold x}=\bold b$$  
   
+
 复数向量和矩阵求导
-由于标量和向量都可以认为是一种简化的矩阵，所以都可以统一为复数对矩阵的求导。根据全微分公式：
+
+标量和向量都可以认为是一种简化的矩阵，所以一个函数对标量，向量和矩阵的求导都可以统一写为复数对矩阵求导的形式。
+假设函数F的参数是一个Q行，N列的复数矩阵，则可以认为F是Q*N个复数参数的函数，而每一个复数又包含x，y或者$z$，$z^*$两个变量，因此根据全微分公式：
 $$df=\sum_{k=0}^{Q-1}\sum_{l=0}^{N-1}\frac{\partial f}{\partial x_{k,l}}dx_{k,l}+\sum_{k=0}^{Q-1}\sum_{l=0}^{N-1}\frac{\partial f}{\partial y_{k,l}}dy_{k,l}$$
 $$=\sum_{k=0}^{Q-1}\sum_{l=0}^{N-1}\frac{\partial f}{\partial z_{k,l}}dz_{k,l}+\sum_{k=0}^{Q-1}\sum_{l=0}^{N-1}\frac{\partial f}{\partial z^*_{k,l}}dz^*_{k,l}$$
 
-而复数导数F可以认为是矩阵$Z$和矩阵$Z^*$的函数，求导的通常方式是：
-对F求导，则$F(Z+dZ_0, Z^*+dZ^*_0)-F(Z,Z^*)=FirstOrder(dZ_0,dZ^*_0)+HighOrder(dZ_0,dZ^*_0)$
+所以，复数导数F可以看成是矩阵$Z$和矩阵$Z^*$的函数，即$F(\bold Z,\bold Z^*)$。
+
+我们回忆一下微分的基本原理，对一个函数$f(x)$微分：
+$f(x+dx)-f(x)=FirstOrder(dx)+HighOrder(dx)$
+FirstOrder指的是一阶的dx，HighOrder指的是高阶的dx，微分的计算通常是扔掉高阶的dx，保留一阶的dx，即：
+$df=FirstOrder(dx)$
+
+对$F(\bold Z,\bold Z^*)$求导是一样的道理：
+$F(Z+dZ_0, Z^*+dZ^*_0)-F(Z,Z^*)$
+$=FirstOrder(dZ_0,dZ^*_0)+HighOrder(dZ_0,dZ^*_0)$
 $dF(Z,Z^*)=FirstOrder(dZ_0,dZ^*_0)$
  
 由此推导出一些结论：  
@@ -103,7 +118,9 @@ $d{\bold Z_0 \bold Z_1}=(d\bold Z_0)\bold Z_1+\bold Z_0d\bold Z_1$
 $d\bold Z^{-1}=-\bold Z^{-1}(d\bold Z)\bold Z^{-1}$  
 $d\bold Z^*=(d\bold Z)^*$  
 $d\bold Z^H=(d\bold Z)^H$
-还有对信号处理非常重要的一些结论，均是标量函数对复向量的求导：
+
+还有对信号处理非常重要的一些结论，均是标量函数对复向量的求导，为了看起来比较清楚，就不写成矩阵的形式了。
+
 $dF(\bold a^T \bold z)=\bold a d\bold z$
 $dF(\bold z^T \bold a)=\bold a d\bold z$
 注意$\bold a^T \bold z = \bold z^T \bold a$
