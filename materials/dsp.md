@@ -1,7 +1,5 @@
 # 缘起
-
-  
-近一年来做信号处理，感觉数学公式的推导在信号处理中非常重要。公式只要理解深刻，后续做matlab，跑数据，写c程序，上产品都有了提纲挈领之感。而信号处理中用的最多的自适应滤波器，它的公式推导过程很多都需要用到复数或复矩阵的求导，我手上信号处理的书默认大家都有了很好的数学基础，这方面写得语焉不详，尤其喜欢在证明中间忽略一两步，看的人非常郁闷。于是最近花了一些业余时间搜集了一些资料好好学习了一下，这篇文章就是学习过程中的一些总结，希望能对信号处理的初学者有所帮助。  
+近一年来做信号处理，感觉数学公式的推导非常重要。公式只要理解深刻，后续做matlab，跑数据，写c程序，上产品都有了提纲挈领之感。而信号处理中用的最多的自适应滤波器，它的公式推导过程很多都需要用到复数或复矩阵的求导，我手上信号处理的书默认大家都有了很好的数学基础，这方面写得语焉不详，尤其喜欢在证明中间忽略一两步，看的人非常郁闷。于是最近花了一些业余时间搜集了一些资料好好学习了一下，这篇文章就是学习过程中的一些总结，希望能对信号处理的初学者有所帮助。
   
 
 # 复数的求导
@@ -13,62 +11,78 @@
 如果极限 $\lim_{\Delta z \to 0} f(z_0 + \Delta z) = f(z_0)$ 存在，则说$f(z)$在$z_0$连续。  
   
 可导  
-设函数$w=f(z)$定义于区域D。$z_0$是D中的一点，点$z_0+\Delta z$不出D的范围.。如果极限  
+设函数$w=f(z)$定义于区域$D$。$z_0$是$D$中的一点，点$z_0+\Delta z$不出$D$的范围。如果极限  
 $$\lim_{\Delta z \to 0} \frac{f(z_0 + \Delta z) - f(z_0)}{\Delta z}$$  
 存在，则认为该函数在$z_0$可导。这个极限值就是$f(z)$在$z_0$处的导数。  
-注意，这个极限的下标$\Delta z \to 0$的方式是不限定的。  
-因为$z$是一个复数，我们可以想象它是复平面上的一点，那么它逼近原点的方式是多种多样的。  
+注意，这个极限的下标$\Delta z \to 0$的方式有很多种。  因为$z$是一个复数，我们可以想象它是复平面上的一点，那么它逼近原点的方式是多种多样的。  
+
 可导的充要条件  
-设函数$f(z) = u(x,y)+iv(x,y)$定义在区域D内，则$f(z)$在D内一点$z=x+iy$可导的充要条件是：u(x, y)与v(x, y)在点$(x, y)$可微，并且满足柯西-黎曼方程:  
-$$\frac{\partial u}{\partial x} = \frac{\partial v}{\partial y}, \frac{\partial u}{\partial y} = -\frac{\partial v}{\partial x}$$  
-解析的定义：  
-如果函数$f(z)$在$z_0$及$z_0$的邻域内处处可导，那么称$f(z)$在$z_0$解析，如果$f(z)$在区域D内每一点解析，则称$f(z)$在D内解析，或称$f(z)$是D内的一个解析函数，也叫全纯函数或者正则函数。  
+设函数$f(z) = u(x,y)+iv(x,y)$定义在区域$D$内，则$f(z)$在$D$内一点$z=x+iy$可导的充要条件是：$u(x, y)$与$v(x, y)$在点$(x, y)$可微，并且满足柯西-黎曼方程:  
+$$\frac{\partial u}{\partial x} = \frac{\partial v}{\partial y}\hspace{1cm} \frac{\partial u}{\partial y} = -\frac{\partial v}{\partial x}$$
+解析  
+如果函数$f(z)$在$z_0$及$z_0$的邻域内处处可导，那么称$f(z)$在$z_0$解析，如果$f(z)$在区域$D$内每一点解析，则称$f(z)$在$D$内解析，或称$f(z)$是$D$内的一个解析函数，也叫全纯函数或者正则函数。  
   
 复变函数教科书里对导数的定义到此为止了，但是，在信号处理领域，需要求导的函数往往是不解析的。  
 比如自适应滤波器中的损失函数：  
-均方误差(MSE) $Cost=E[|e(k)^2|]$  
-最小二乘(LS) $Cost=\frac{1}{k+1}\sum_{i=0}^{k}|e(k-i)|^2$  
-加权最小二乘(WLS) $Cost=\sum_{i=0}^{k}\lambda ^i|e(k-i)|^2$，其中$\lambda < 1$  
-瞬时值(LSV) $Cosyt=|e(k)|^2$  
-我们发现，如果e(k)是用复数z标示的话，所有的损失函数都可以表示为$zz*$的形式。  
-对于最优化问题，需要对损失函数求导，但从上面的定义来看，这个函数是不可导的。证明如下：  
-$zz^*=x^2+y^2$ $\frac {\partial u}{\partial x}=2x$ $\frac {\partial v}{\partial x}=0$  
-显然不满足柯西黎曼方程，因此不解析。  
-  
+均方误差(MSE) 
+$$Cost=E[|e(k)^2|]$$  
+最小二乘(LS) 
+$$Cost=\frac{1}{k+1}\sum_{i=0}^{k}|e(k-i)|^2$$
+加权最小二乘(WLS)
+$$Cost=\sum_{i=0}^{k}\lambda ^i|e(k-i)|^2,\hspace{1cm}\lambda < 1$$  
+瞬时值(LSV) $$Cost=|e(k)|^2$$  
+我们发现，如果e(k)是用复数z标示的话，所有的损失函数都可以表示为$|e(k)|^2=zz^*$的形式。  
+对于最优化问题，需要对损失函数求导，但从严格的数学角度来看，这个函数是不可导的。证明如下：
+$zz^*=x^2+y^2$
+$\frac {\partial u}{\partial x}=2x$
+$\frac {\partial v}{\partial x}=0$  
+显然不满足柯西黎曼方程，因此不可导。  
 那如何对这种函数求导呢？  
+
 形式导数  
-假设f(z)解析，则f(z)可以展开为z的泰勒级数的形式，在这个展开式中没有$z^*$的身影，说明f(z)和$z^*$没有任何关系。实际上，f(z)解析可以等价为$\frac{\partial f}{\partial z^*}=0$。  
-那么，不解析的函数就同时依赖于$z$和$z^*$。可以轻松推出一个事实：实函数f(z)都是不解析的，因为它必须同时依赖于z和$z^*$，否则它的虚部无法被消掉。因此$zz^*$作为一个实函数，也印证了不解析的事实。  
-所以，一个不解析的复变函数可以写成  
-$f(z)=f(z, z*)$，以及$f(z)=f(x, y)$  
-根据全微分公式  
+假设$f(z)$解析，则$f(z)$可以展开为$z$的泰勒级数的形式，在这个展开式中没有$z^*$的身影，说明f(z)和$z^*$没有任何关系。换句话说，一个解析的复变函数只跟$z$有关，和$z^*$无关。
+
+实际上，$f(z)$解析可以等价为$\frac{\partial f}{\partial z^*}=0$。  
+
+那么，不解析的函数就同时依赖于$z$和$z^*$。可以轻松推出一个事实：实函数f(z)都是不解析的，因为它必须同时依赖于z和$z^*$，否则它的虚部无法被消掉。因此$f(z)=zz^*$作为一个实函数，也印证了上面用柯西-黎曼方程推导出不解析的结果。  
+所以，一个不解析的复变函数由于同时跟$z, z^*$以及$x, y$有关，可以写成： 
+$$f(z)=f(z, z^*),\hspace{1cm}f(z)=f(x, y)$$
+这两种形式。根据全微分公式：
 $$df=\frac{\partial f}{\partial x}dx+\frac{\partial f}{\partial y}dy$$  
 因此：  
-$$df=\frac{\partial f}{\partial x}\frac{dz+dz^*}{2}+\frac{\partial f}{\partial y}\frac{dz-dz^*}{2i}=\frac{1}{2}(\frac{\partial f}{\partial x}-i\frac{\partial f}{\partial y})dz+\frac{1}{2}(\frac{\partial f}{\partial x}+i\frac{\partial f}{\partial y})dz^*$$  
-而  
+$$df=\frac{\partial f}{\partial x}\frac{dz+dz^*}{2}+\frac{\partial f}{\partial y}\frac{dz-dz^*}{2i}$$
+$$=\frac{1}{2}(\frac{\partial f}{\partial x}-i\frac{\partial f}{\partial y})dz+\frac{1}{2}(\frac{\partial f}{\partial x}+i\frac{\partial f}{\partial y})dz^*$$  
+而根据全微分公式又同样可得：
 $$df=\frac{\partial f}{\partial z}dz+\frac{\partial f}{\partial z^*}dz^*$$  
-可得：  
-$$\frac{\partial f(z_0)}{\partial z}=\frac{1}{2}(\frac{\partial f(z_0)}{\partial x}-i\frac{\partial f(z_0)}{\partial y})$$  
-$$\frac{\partial f(z_0)}{\partial z^*}=\frac{1}{2}(\frac{\partial f(z_0)}{\partial x}+i\frac{\partial f(z_0)}{\partial y})$$  
-由上面两个等式又易得：  
-$$\frac{\partial f(z_0)}{\partial x}=\frac{\partial f(z_0)}{\partial z}+\frac{\partial f(z_0)}{\partial z^*}$$  
+因此：  
+$$\frac{\partial f}{\partial z}=\frac{1}{2}(\frac{\partial f}{\partial x}-i\frac{\partial f}{\partial y})$$
+$$\frac{\partial f}{\partial z^*}=\frac{1}{2}(\frac{\partial f}{\partial x}+i\frac{\partial f}{\partial y})$$ 
+同样的方式又易得：  
+$$\frac{\partial f}{\partial x}=\frac{\partial f}{\partial z}+\frac{\partial f}{\partial z^*}$$  
 $$\frac{\partial f(z_0)}{\partial y}=i(\frac{\partial f(z_0)}{\partial z}-\frac{\partial f(z_0)}{\partial z^*})$$  
-易得推论：  
-$\frac{\partial z}{\partial z}=1$，$\frac{\partial z^*}{\partial z^*}=1$，$\frac{\partial z}{\partial z^*}=0$，$\frac{\partial z^*}{\partial z}=0$  
-那看看函数$f(z)=zz^*$，代入可得：  
-$\frac{\partial (zz^*)}{\partial z}=z^*$  
-$\frac{\partial (zz^*)}{\partial z^*}=z$  
+根据上面的公式，得到推论：  
+$$\frac{\partial z}{\partial z}=1$$
+$$\frac{\partial z^*}{\partial z^*}=1$$
+$$\frac{\partial z}{\partial z^*}=0$$
+$$\frac{\partial z^*}{\partial z}=0$$  
+$$\frac{\partial (zz^*)}{\partial z}=z^*$$  
+$$\frac{\partial (zz^*)}{\partial z^*}=z$$
    
 # 向量和矩阵的求导
 
-当对多变量进行求导时，为了简化运算，把很多变量组成矢量或者矩阵，作为一个实体来看待，这就是对矢量和矩阵的求导。  
-可能存在的求导情况有标量，向量，矩阵分别对各自求导，根据排列组合一共有9种情况，要想详细了解可参考
+当一个函数有很多变量，需要对多变量求导时，为了简化运算，把变量组成向量或者矩阵，作为一个实体来看待，这就是对向量和矩阵的求导。  
+可能存在的求导有标量，向量，矩阵分别对各自求导，根据排列组合一共有9种情况，比如“标量对标量的求导，向量对标量的求导”等等。要想详细了解可参考
 [https://en.wikipedia.org/wiki/Matrix_calculus](https://en.wikipedia.org/wiki/Matrix_calculus)
 
 这里我们只看最常用的标量对矢量的求导。  
-假设f(x)是一个标量，x是一个矢量，则：  
+假设f(x)是一个标量，$\bold x$是一个矢量，$\bold x$可表示为
+$$\begin{bmatrix} {x_1}  
+\\ \cr {x_2} \\ \cr \vdots \\ \cr {x_N} \end{bmatrix}$$  
+
+则:
 $$\frac{\partial f(x)}{\partial \bold x}=\begin{bmatrix} \frac{f(x)}{x_1}  
-\\ \cr \frac{f(x)}{x_2} \\ \cr \vdots \\ \cr \frac{f(x)}{x_N} \end{bmatrix}$$  
+\\ \cr \frac{f(x)}{x_2} \\ \cr \vdots \\ \cr \frac{f(x)}{x_N} \end{bmatrix}$$
+为什么是这样呢？答案是全微分公式：
 根据这个定义，易得  
 $$\frac{\partial \bold x^T \bold b}{\partial \bold x}=\bold b$$  
 $$\frac{\partial \bold b^T \bold x}{\partial \bold x}=\bold b$$  
@@ -106,7 +120,7 @@ $dF(\bold z^H \bold A \bold z^*)=(\bold A + \bold A^T)\bold z^* d\bold z^*$
   
 
   
-1. 维纳滤波  
+1. 维纳滤波
 维纳滤波以 $MSE=E(|e(k)^2|)$ 为损失函数。
 $e(k)=d(k)-\bold w^H\bold x$  
 $|e(k)|^2=(d(k)-\bold w^H\bold x)^H(d(k)-\bold w^H\bold x)$  
@@ -125,7 +139,7 @@ $\frac{\partial {E(|e(k)|^2)}}{\partial w^*}=-E(d^H\bold x)+E(\bold x\bold x^H)\
 $-\bold P+\bold R \bold w=0$
 $\bold w=\bold R^{-1} \bold P$  
   
-2. LMS  
+3. LMS  
 MSE这种损失函数实际上是无法求得的，因为它要求对信号进行无限次测量。为了能获得维纳解，人们设计了一些方式来进行迭代求解，也就是在维纳的解空间内进行搜索，逐渐逼近维纳解。比如最陡梯度下降法。
 意思就是：
 $\bold w(k+1)=\bold w(k) -\mu \bold {\hat g(k)}$  
@@ -139,7 +153,7 @@ $=\bold w(k)+\mu \bold x(k)(d^H(k)-\bold x(k)^H\bold w(k))$
 代入上式，可得$\bold w(k+1)=\bold w(k) -\mu \bold x(k){e(k)^*}$，  
 注意$e(k)$是个标量，共轭转置等于共轭。
   
-3. APA  
+4. APA  
 APA是LMS的一种变形。  
 首先定义  
 $\bold e_{ap}(k)=\bold d_{ap}(k)-\bold X^T_{ap}\bold w^*(k)$
@@ -169,7 +183,7 @@ $\bold \lambda=\frac{1}{2}(\bold X^H_{ap}(k)\bold X_{ap}(k))^{-1}\bold e^*_{ap}(
 带入(3.1)  
 $\bold w(k+1)=\bold w(k)+\mu \bold X_{ap}(k)(\bold X^H_{ap}(k)\bold X_{ap}(k))^{-1}\bold e^*_{ap}(k)$  
   
-4. LCMV  
+5. LCMV  
 线性约束最小方差的意思是：在满足约束条件的情况下，让输出信号的功率最小。这个约束条件就是某一方向的信号不衰减。
 信号不衰减可以表示为
 $\bold w^H\bold c=f$，推导如下：
@@ -194,7 +208,7 @@ $\lambda=-(\bold c^H \bold R^{-1} \bold c)^{-1}f$
 最后代入式子 (4.1)  
 $\bold w= \bold R^{-1}\bold c(\bold c^H \bold R^{-1} \bold c)^{-1}f$  
   
-5. MVDR  
+6. MVDR  
 输入信号是  
 $\bold x= \bold s +\bold i +\bold n$  
 其中$\bold s$是纯净语音信号，$\bold i$是干扰信号，$\bold n$是噪音信号。  
