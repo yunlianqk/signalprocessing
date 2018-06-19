@@ -4,15 +4,16 @@ frameLen = 10;
 
 Lm = 4;
 Lc = 40; %400ms
-D = 3; %30ms
+D = 5; %30ms
 F = 2;
 Iteration = 3;
+Epsilon = 1e-10;
 
 
-ch1File = './data/derev/megatron_ch1.wav';
-ch2File = './data/derev/megatron_ch2.wav';
-ch3File = './data/derev/megatron_ch3.wav';
-ch4File = './data/derev/megatron_ch4.wav';
+ch1File = './data/derev/inception_01.wav';
+ch2File = './data/derev/inception_02.wav';
+ch3File = './data/derev/inception_03.wav';
+ch4File = './data/derev/inception_04.wav';
 
 out1File = './data/derev/out_ch1.wav';
 
@@ -54,15 +55,13 @@ freqEnergyFactor = 1/sum(h.^2);
 % in this specific filter-bank design, delay is 3 frames
 fbDelay = 3;
 
-
-
 % Forward filterbank analysis
 ch1Spec = DftFB(ch1, frameSize, numBands, h, length(h)/numBands);
 ch2Spec = DftFB(ch2, frameSize, numBands, h, length(h)/numBands);
 ch3Spec = DftFB(ch3, frameSize, numBands, h, length(h)/numBands);
 ch4Spec = DftFB(ch4, frameSize, numBands, h, length(h)/numBands);
 
-var = zeros(size(ch1Spec, 1), 1);
+var = zeros(size(ch1Spec, 2), 1);
 
 spec = vertcat(ch1Spec, ch2Spec, ch3Spec, ch4Spec);
 Lc = ceil(F*frameSize*Lc/numBands);
@@ -70,22 +69,22 @@ D = ceil(F*frameSize*D/numBands);
 
 X = zeros(Lm*Lc, 1);
 dCh1 = zeros(size(ch1Spec));
-%out2Spec = zeros(size(ch2Spec));
-
 
 for ii=1:size(ch1Spec, 1)
-    var(ii) = max(ch1Spec(ii).*conj(ch1Spec(ii)));
     for iter = 1:Iteration
         R = zeros(Lm*Lc);
         P = zeros(Lm*Lc, 1);
         for jj = (Lc+D):size(ch1Spec, 2)
+            if iter == 1
+                var(jj) = max(ch1Spec(ii, jj).*conj(ch1Spec(ii, jj)), Epsilon);
+            end;
             for ll = 0:Lm-1
                 for kk = 1:Lc
                     X(ll*Lc + kk)=spec(ll*size(ch1Spec,1)+ii,jj-D-kk+1);
                 end;
             end;
-            R = R + ((X*X')./var(ii));
-            P = P + (X*conj(ch1Spec(ii,jj))./var(ii));
+            R = R + ((X*X')./var(jj));
+            P = P + (X*conj(ch1Spec(ii,jj))./var(jj));
         end;
         C=pinv(R)*P;
         for jj = (Lc+D):size(ch1Spec, 2)
@@ -95,14 +94,11 @@ for ii=1:size(ch1Spec, 1)
                 end;
             end;
             dCh1(ii, jj)=ch1Spec(ii, jj) - C'*X;
+            var(jj) = max(dCh1(ii, jj).*conj(dCh1(ii, jj)), Epsilon);
         end;
-        var(ii) = max(dCh1(ii).*conj(dCh1(ii)));
-        var(ii) = max(var(ii), 1e-10);
     end;
 end;
 
 
 ch1Out = InvDftFB(dCh1, frameSize, numBands, h, length(h)/numBands);
-%ch2Out = InvDftFB(ch2Spec, frameSize, numBands, h, length(h)/numBands);
 audiowrite(out1File, ch1Out, fs);
-%audiowrite(out2File, ch2Out, fs);
