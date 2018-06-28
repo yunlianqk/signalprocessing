@@ -3,19 +3,18 @@ clear all;
 frameLen = 10;
 
 Lm = 4;
-Lc = 40; %400ms
-D = 5; %30ms
+Lc = 30; %300ms
+D = 3; %30ms
 F = 2;
 Iteration = 3;
-Epsilon = 1e-10;
+Epsilon = 1e-4;
 
+ch1File = './data/derev/metroplex_ch1.wav';
+ch2File = './data/derev/metroplex_ch2.wav';
+ch3File = './data/derev/metroplex_ch3.wav';
+ch4File = './data/derev/metroplex_ch4.wav';
 
-ch1File = './data/derev/inception_01.wav';
-ch2File = './data/derev/inception_02.wav';
-ch3File = './data/derev/inception_03.wav';
-ch4File = './data/derev/inception_04.wav';
-
-out1File = './data/derev/out_ch1.wav';
+out1File = './data/derev/metroplex_out_ch1.wav';
 
 assert(frameLen == 10 || frameLen == 20);
 
@@ -76,7 +75,11 @@ for ii=1:size(ch1Spec, 1)
         P = zeros(Lm*Lc, 1);
         for jj = (Lc+D):size(ch1Spec, 2)
             if iter == 1
-                var(jj) = max(ch1Spec(ii, jj).*conj(ch1Spec(ii, jj)), Epsilon);
+                var_ch1 = max(ch1Spec(ii, jj).*conj(ch1Spec(ii, jj)), Epsilon);
+                var_ch2 = max(ch2Spec(ii, jj).*conj(ch2Spec(ii, jj)), Epsilon);
+                var_ch3 = max(ch3Spec(ii, jj).*conj(ch3Spec(ii, jj)), Epsilon);
+                var_ch4 = max(ch4Spec(ii, jj).*conj(ch4Spec(ii, jj)), Epsilon);
+                var(jj)=max([var_ch1 var_ch2 var_ch3 var_ch4]);
             end;
             for ll = 0:Lm-1
                 for kk = 1:Lc
@@ -98,7 +101,6 @@ for ii=1:size(ch1Spec, 1)
         end;
     end;
 end;
-
 
 ch1Out = InvDftFB(dCh1, frameSize, numBands, h, length(h)/numBands);
 audiowrite(out1File, ch1Out, fs);
