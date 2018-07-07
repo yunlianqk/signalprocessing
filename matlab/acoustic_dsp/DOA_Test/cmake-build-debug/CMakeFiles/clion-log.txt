@@ -1,0 +1,4 @@
+/home/mobvoi/clion-2016.3.3/bin/cmake/bin/cmake -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - Unix Makefiles" /home/mobvoi/PycharmProjects/acoustic_dsp/DOA_Test
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/mobvoi/PycharmProjects/acoustic_dsp/DOA_Test/cmake-build-debug

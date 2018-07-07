@@ -1,0 +1,1 @@
+/usr/bin/cc  -g   CMakeFiles/DOA_Test.dir/main.c.o CMakeFiles/DOA_Test.dir/DOA.c.o CMakeFiles/DOA_Test.dir/gcc_phat.c.o  -o DOA_Test  -L/usr/local/lib -lfftw3 -lm -Wl,-rpath,/usr/local/lib 
