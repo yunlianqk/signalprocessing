@@ -39,6 +39,16 @@ for col = 1:coln
     % windowing
     xw = x(indx+1:indx+wlen).*win;
     
+    % plot the lpc?
+%     XW = fft(xw, 1000);
+%     [A, G , r, a] = autolpc(xw, 30);
+%     H = G./fft(A, 1000);
+%     close all;
+%     figure(100);
+%     plot(abs(XW), 'k');
+%     hold on;
+%     plot(abs(H), 'r');
+    
     % FFT
     X = fft(xw, nfft);
     
